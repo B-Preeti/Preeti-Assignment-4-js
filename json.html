@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Table</title>
+  <style>
+    .row:nth-child(odd) {
+      background-color: yellow;
+    }
+    .row:nth-child(even) {
+      background-color: pink;
+    }
+    .row {
+      display: flex;
+    }
+    .cell {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid blue;
+    }
+    .header {
+      font-weight: bold;
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+  <div id="table"></div>
+
+  <script>
+    const jsonData = [
+      {
+        "Country": "Argentina",
+        "Languages": "Spanish (official), English, Italian, German, French",
+        "Population": "41,803,125",
+        "MedianAge": "31.3",
+        "Area": "2,780,387"
+      },
+      {
+        "Country": "Australia",
+        "Languages": "English 78%, native and other languages",
+        "Population": "23,650,169",
+        "MedianAge": "37.3",
+        "Area": "7,739,983"
+      },
+      {
+        "Country": "Greece",
+        "Languages": "Greek 99% (official), English, French",
+        "Population": "11,128,404",
+        "MedianAge": "43.2",
+        "Area": "131,966"
+      },
+      {
+        "Country": "Luxembourg",
+        "Languages": "Luxembourgish (national), French, German (both administrative)",
+        "Population": "536,761",
+        "MedianAge": "39.1",
+        "Area": "2,586"
+      },
+      {
+        "Country": "Canada",
+        "Languages": "English, French",
+        "Population": "37,742,154",
+        "MedianAge": "40.8",
+        "Area": "9,984,670"
+      },
+      {
+        "Country": "India",
+        "Languages": "Hindi, English",
+        "Population": "1,366,417,754",
+        "MedianAge": "28.7",
+        "Area": "3,287,263"
+      },
+      {
+        "Country": "Japan",
+        "Languages": "Japanese",
+        "Population": "126,860,301",
+        "MedianAge": "48.4",
+        "Area": "377,975"
+      },
+      {
+        "Country": "Brazil",
+        "Languages": "Portuguese (official), Spanish, English, French",
+        "Population": "210,147,125",
+        "MedianAge": "32.4",
+        "Area": "8,515,767"
+      },
+      {
+        "Country": "Russia",
+        "Languages": "Russian, others",
+        "Population": "145,872,256",
+        "MedianAge": "39.6",
+        "Area": "17,098,242"
+      },
+      {
+        "Country": "South Africa",
+        "Languages": "Zulu, Xhosa, Afrikaans, English, others",
+        "Population": "58,558,270",
+        "MedianAge": "27.6",
+        "Area": "1,221,037"
+      }
+    ];
+
+    function loadData() {
+      if (!localStorage.getItem('countries')) {
+        localStorage.setItem('countries', JSON.stringify(jsonData));
+      }
+
+      const countries = JSON.parse(localStorage.getItem('countries'));
+      renderTable(countries);
+    }
+
+    function renderTable(data) {
+      const table = document.getElementById('table');
+
+      // Create header row
+      const headerRow = document.createElement('div');
+      headerRow.className = 'row header';
+      const headers = ['Country', 'Languages', 'Population', 'Median Age', 'Area (Km²)'];
+      headers.forEach(headerText => {
+        const headerCell = document.createElement('div');
+        headerCell.className = 'cell';
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+      });
+      table.appendChild(headerRow);
+
+      // Create data rows
+      data.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+
+        for (const key in item) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.textContent = item[key];
+          row.appendChild(cell);
+        }
+
+        table.appendChild(row);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>
